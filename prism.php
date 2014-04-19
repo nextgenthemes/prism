@@ -228,7 +228,7 @@ class Prism {
 
 		event.preventDefault();
 
-		send_to_editor( '[prism field= language= ]' );
+		send_to_editor( '[prism field= language=]' );
 	} );
 
 }(jQuery));

@@ -35,7 +35,7 @@ What data mining?
 
 == Screenshots ==
 
-1. WTF is this
+1. Demo
 2. Bundled Prism version
 
 == Changelog ==
