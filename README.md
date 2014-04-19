@@ -36,7 +36,7 @@ What data mining?
 ## Screenshots ##
 
 ![](screenshot-1.png)
-WTF is this
+Demo
 ![](screenshot-2.png)
 Bundled Prism version
 
