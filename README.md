@@ -4,7 +4,7 @@
 **Tags:** prism, prismjs, code, syntax, highlighter, syntax highlighter, code highlighter, highlighter, highlighting, NSA, NSA spying
 **Requires at least:** 3.5.0
 **Tested up to:** 4.0
-**Stable tag:** 0.9.0
+**Stable tag:** 0.9.1
 **License:** GPLv3
 **License URI:** http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -35,7 +35,5 @@ What data mining?
 
 ## Screenshots ##
 
-![](screenshot-1.png)
-Demo
-![](screenshot-2.png)
-Bundled Prism version
+1. Demo
+2. Bundled Prism version
