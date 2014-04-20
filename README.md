@@ -12,7 +12,7 @@ Most lightweight, yet most configurable and advanced PrismJS WordPress integrati
 
 ## Description ##
 
-Despite two plugins already on wordpress.org I decided to write my own from scratch. The result is a very capable minimalistic plugin with only ~250 lines of PHP.
+Despite two plugins already on wordpress.org I decided to write my own from scratch. The result is a minimalistic but powerful plugin with only ~250 lines of PHP.
 
 * Supports every possible Prism configuration.
 * Does not load prism on every page, only when needed.
@@ -21,7 +21,7 @@ Despite two plugins already on wordpress.org I decided to write my own from scra
 * Developers may use the `prism` handle to enqueue the pre-registered script and style.
 * Has admin editor button for quick shortcode template snippet.
 * Has no options page by design.
-* **Read more ->** [Prism Code Highlighter](http://nextgenthemes.com/plugins/prism)
+* **Read more ->** [Prism Syntax Highlighter for WordPress](http://nextgenthemes.com/plugins/prism-syntax-highlighter-for-wordpress/)
 
 ## Installation ##
 
@@ -39,8 +39,3 @@ What data mining?
 Demo
 ![](screenshot-2.png)
 Bundled Prism version
-
-## Changelog ##
-
-### 0.9 ###
-* Release

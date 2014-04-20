@@ -80,7 +80,7 @@ class Prism {
 	}
 
 	public function maybe_load_prism() {
-		
+
 		global $post, $wp_query;
 
 		$post_contents = '';
@@ -89,7 +89,7 @@ class Prism {
 
 			$post_contents = $post->post_content;
 
-		} else {
+		} elseif ( defined( 'PRISM_ARCHIVE_SCAN' ) && PRISM_ARCHIVE_SCAN ) {
 
 	       	$post_ids = wp_list_pluck( $wp_query->posts, 'ID' );
 
@@ -111,6 +111,7 @@ class Prism {
 		extract( shortcode_atts( 
 			array(
 				'field'            => false,
+				'url'              => false,
 				'post_id'          => false,
 				//* <code>
 				'language'         => 'none', 
@@ -120,7 +121,8 @@ class Prism {
 				'data_src'         => false, 
 				'data_start'       => false, 
 				'data_line'        => false, 
-				'data_line_offset' => false
+				'data_line_offset' => false,
+				'data_manual'      => false,
 			),
 			$atts,
 			'prism'
@@ -139,6 +141,35 @@ class Prism {
 			'class' => "language-{$language}",
 		);
 
+		if ( $url ) {
+
+			if ( false === filter_var( $url, FILTER_VALIDATE_URL ) ) {
+
+				return sprintf( '<p><strong>Prism Shortcode Error:</strong> URL <code>%s</code> is invalid </p>', esc_html( $url ) );
+			}
+
+			$response = wp_remote_get( esc_url( $url ) );
+
+			if ( is_wp_error( $response ) ) {
+
+				return sprintf( '<p><strong>Prism Shortcode Error:</strong> could not get remote content. WP_Error message:<br>%s</p>', esc_html( $response->get_error_message() ) );
+			
+			} elseif( 200 != $response['response']['code'] ) {
+
+				return sprintf( '<p><strong>Prism Shortcode Error:</strong> could not get remote content. HTTP response code %s</p>', esc_html( $response['response']['code'] ) );
+			}
+
+			wp_enqueue_style( 'prism' );
+			wp_enqueue_script( 'prism' );
+
+			return sprintf( 
+				'<pre %s><code %s>%s</code></pre>',
+				$this->parse_attr( $pre_attr ),
+				$this->parse_attr( $code_attr ),
+				esc_html( $response['body'] )
+			);
+		}
+
 		if ( $data_src ) {
 
 			wp_enqueue_style( 'prism' );
@@ -151,7 +182,7 @@ class Prism {
 
 		if ( ! $field ) {
 
-			return '<p><strong>Prism Shortcode Error:</strong> Field parameter is missing</p>';
+			return '<p><strong>Prism Shortcode Error:</strong> field, url, data_src is missing</p>';
 		}
 
 		global $post;
@@ -181,6 +212,10 @@ class Prism {
 		$out = '';
 
 		foreach ( $attr as $key => $value ) {
+
+			if ( 'data-manual' == $key && false !== $value ) {
+				$out .= ' data-manual';
+			}
 
 			if ( empty( $value ) ) {
 				continue;
