@@ -9,7 +9,7 @@
 * @wordpress-plugin
 * Plugin Name: Prism for WP
 * Plugin URI: http://nextgenthemes.com/plugins/prism
-* Description: Most minimalistic yet most configurabale Prismjs Plugin, includes shortcode for custom field conteted (detached)
+* Description: Most minimalistic yet most configurabale Prismjs integration plugin, includes shortcode for custom field content (detached)
 * Version: 0.9.0
 * Author: Nicolas Jonas
 * Author URI: http://nicolasjonas.com
@@ -91,12 +91,12 @@ class Prism {
 
 		} elseif ( defined( 'PRISM_ARCHIVE_SCAN' ) && PRISM_ARCHIVE_SCAN ) {
 
-	       	$post_ids = wp_list_pluck( $wp_query->posts, 'ID' );
+			$post_ids = wp_list_pluck( $wp_query->posts, 'ID' );
 
-        	foreach ( $post_ids as $post_id ) {
+			foreach ( $post_ids as $post_id ) {
 
-        		$post_contents .= get_post_field( 'post_content', $post_id );
-        	}
+				$post_contents .= get_post_field( 'post_content', $post_id );
+			}
 		}
 
 		if ( strpos( $post_contents, '<code class="language-' ) !== false ) {
@@ -215,6 +215,7 @@ class Prism {
 
 			if ( 'data-manual' == $key && false !== $value ) {
 				$out .= ' data-manual';
+				continue;
 			}
 
 			if ( empty( $value ) ) {

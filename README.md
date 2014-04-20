@@ -1,14 +1,14 @@
 # Prism Code Highlighter #
 **Contributors:** nico23
-**Donate link:** http://nextgenthemes.com/plugins/prism
+**Donate link:** https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UNDSCARF3ZPBC
 **Tags:** prism, prismjs, code, syntax, highlighter, syntax highlighter, code highlighter, highlighter, highlighting, NSA, NSA spying
 **Requires at least:** 3.5.0
 **Tested up to:** 4.0
-**Stable tag:** 0.9
+**Stable tag:** 0.9.0
 **License:** GPLv3
 **License URI:** http://www.gnu.org/licenses/gpl-3.0.html
 
-Most lightweight, yet most configurable and advanced PrismJS WordPress integration plugin. Custom fields display (Detached) supported.
+Most lightweight, yet most configurable and advanced PrismJS WordPress integration plugin. Custom fields display (detached) supported.
 
 ## Description ##
 
