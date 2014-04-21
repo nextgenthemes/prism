@@ -4,7 +4,7 @@
 **Tags:** prism, prismjs, code, syntax, highlighter, syntax highlighter, code highlighter, highlighter, highlighting, NSA, NSA spying
 **Requires at least:** 3.5.0
 **Tested up to:** 4.0
-**Stable tag:** 0.9.3
+**Stable tag:** 0.9.4
 **License:** GPLv3
 **License URI:** http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -33,8 +33,11 @@ No idea how.
 
 What data mining?
 
+### More! ###
+
+[K](http://nextgenthemes.com/plugins/prism-syntax-highlighter-for-wordpress/)
+
 ## Screenshots ##
 
 1. Demo
 2. Bundled Prism version
-
