@@ -1,3 +1,4 @@
+/* http://prismjs.com/download.html?themes=prism-okaidia&languages=markup+css+clike+javascript+bash+less+php&plugins=line-highlight+line-numbers+wpd+show-language */
 /**
  * okaidia theme for JavaScript, CSS and HTML
  * Loosely based on Monokai textmate theme by http://www.monokai.nl/
@@ -7,13 +8,14 @@
 code[class*="language-"],
 pre[class*="language-"] {
 	color: #f8f8f2;
-	text-shadow: 0 1px rgba(0,0,0,0.3);
+	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
 	font-family: Consolas, Monaco, 'Andale Mono', monospace;
 	direction: ltr;
 	text-align: left;
 	white-space: pre;
 	word-spacing: normal;
 	word-break: normal;
+	line-height: 1.5;
 
 	-moz-tab-size: 4;
 	-o-tab-size: 4;
@@ -27,7 +29,7 @@ pre[class*="language-"] {
 
 /* Code blocks */
 pre[class*="language-"] {
-	padding: 1em !important; /* needed to add !important for the Twentytwelve theme */
+	padding: 1em;
 	margin: .5em 0;
 	overflow: auto;
 	border-radius: 0.3em;
@@ -62,22 +64,24 @@ pre[class*="language-"] {
 .token.property,
 .token.tag,
 .token.constant,
-.token.symbol {
+.token.symbol,
+.token.deleted {
 	color: #f92672;
 }
 
 .token.boolean,
-.token.number{
+.token.number {
 	color: #ae81ff;
 }
 
 .token.selector,
 .token.attr-name,
 .token.string,
-.token.builtin {
+.token.char,
+.token.builtin,
+.token.inserted {
 	color: #a6e22e;
 }
-
 
 .token.operator,
 .token.entity,
@@ -89,14 +93,13 @@ pre[class*="language-"] {
 }
 
 .token.atrule,
-.token.attr-value
-{
+.token.attr-value,
+.token.function {
 	color: #e6db74;
 }
 
-
-.token.keyword{
-color: #66d9ef;
+.token.keyword {
+	color: #66d9ef;
 }
 
 .token.regex,
@@ -104,8 +107,12 @@ color: #66d9ef;
 	color: #fd971f;
 }
 
-.token.important {
+.token.important,
+.token.bold {
 	font-weight: bold;
+}
+.token.italic {
+	font-style: italic;
 }
 
 .token.entity {
@@ -114,7 +121,7 @@ color: #66d9ef;
 
 pre[data-line] {
 	position: relative;
-	padding: 1em 0 1em 3em !important; /* needed to add !important for the Twentytwelve theme */
+	padding: 1em 0 1em 3em;
 }
 
 .line-highlight {
@@ -161,7 +168,7 @@ pre[data-line] {
 	}
 pre.line-numbers {
 	position: relative;
-	padding-left: 3.8em !important; /* needed to add !important for the Twentytwelve theme */
+	padding-left: 3.8em;
 	counter-reset: linenumber;
 }
 
@@ -199,7 +206,30 @@ pre.line-numbers > code {
 			padding-right: 0.8em;
 			text-align: right;
 		}
+code[class*="language-"] a[href],
+pre[class*="language-"] a[href] {
+	cursor: help;
+	text-decoration: none;
+}
 
-pre code {
-	line-height: inherit !important; /* needed to add this for the Twentytwelve theme */
+code[class*="language-"] a[href]:hover,
+pre[class*="language-"] a[href]:hover {
+	cursor: help;
+	text-decoration: underline;
+}
+pre[class*='language-'] {
+	position: relative;
+}
+pre[class*='language-'][data-language]::before {
+	content: attr(data-language);
+	color: black;
+	background-color: #CFCFCF;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 0.9em;
+	border-radius: 0 0 0 5px;
+	padding: 0 0.5em;
+	text-shadow: none;
 }
