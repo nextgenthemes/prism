@@ -67,6 +67,9 @@ What data mining?
 
 == Changelog ==
 
+### 1.0.1 ###
+* Added SVG icon for plugin installer
+
 ### 1.0.0 ###
 * Updated bundled Prism version
 

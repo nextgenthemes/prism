@@ -10,7 +10,7 @@
 * Plugin Name:       Prism Syntax Highlighter for WordPress
 * Plugin URI:        http://nextgenthemes.com/plugins/prism
 * Description:       Most minimalistic yet most configurabale Prismjs integration plugin, includes shortcode for custom field content (detached)
-* Version:           1.0.0
+* Version:           1.0.1
 * Author:            Nicolas Jonas
 * Author URI:        https://nextgenthemes.com
 * License:           GPL-3.0
