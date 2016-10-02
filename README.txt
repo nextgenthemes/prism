@@ -23,7 +23,7 @@ Despite two plugins already on wordpress.org I decided to write my own from scra
 * Has no options page by design.
 * **Read more ->** [Prism Syntax Highlighter for WordPress](http://nextgenthemes.com/plugins/prism-syntax-highlighter-for-wordpress/)
 
-Bundled Prism Version (2015-04-20)
+Bundled Prism Version (2016-09-17)
 
 Link: http://prismjs.com/download.html?themes=prism-okaidia&languages=markup+css+clike+javascript+bash+less+php&plugins=line-highlight+line-numbers+wpd+show-language
 
@@ -37,7 +37,6 @@ Languages
 * JavaScript
 * Bash
 * PHP
-* Less
 * Sass (Scss)
 
 Plugins
@@ -66,6 +65,12 @@ What data mining?
 1. Demo
 
 == Changelog ==
+
+### 1.1.0 - 2016-09-18 ###
+* Updated bundled prism.js.
+* Added quotes to the shortcode included with the buttin click.
+* Always scan archives, abodon the define switch.
+* Added TinyMCE dropdown styles to style <code> and <pre> tags with language-xxx classes.
 
 ### 1.0.1 ###
 * Added SVG icon for plugin installer

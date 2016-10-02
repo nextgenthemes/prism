@@ -10,13 +10,13 @@
 * Plugin Name:       Prism Syntax Highlighter for WordPress
 * Plugin URI:        http://nextgenthemes.com/plugins/prism
 * Description:       Most minimalistic yet most configurabale Prismjs integration plugin, includes shortcode for custom field content (detached)
-* Version:           1.0.1
+* Version:           1.1.0
 * Author:            Nicolas Jonas
 * Author URI:        https://nextgenthemes.com
 * License:           GPL-3.0
 * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
 * GitHub Plugin URI: https://github.com/nextgenthemes/prism
-* 
+*
 * WordPress-Plugin-Boilerplate: v2.6.1 (Only parts of it)
 */
 
@@ -31,19 +31,25 @@ class Prism {
 
 	protected static $instance = null;
 
-	const PRISM_VERSION = '20150420';
+	const PRISM_VERSION = '2016-10-02';
 
 	private function __construct() {
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_styles' ), 0 );
+		add_filter( 'mce_css', array( $this, 'plugin_editor_style' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ), 0 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'maybe_load_prism' ) );
 
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_load_prism' ) );
+
 		add_action( 'admin_head',    array( $this, 'print_admin_css' ) );
 		add_action( 'media_buttons', array( $this, 'add_media_button' ), 11 );
-		add_action( 'admin_footer',  array( $this, 'print_admin_javascript' ) );		
+		add_action( 'admin_footer',  array( $this, 'print_admin_javascript' ) );
 
 		add_shortcode( 'prism', array( $this, 'shortcode' ) );
+
+		add_filter( 'mce_buttons_2', array( $this, 'mce_add_buttons' ) );
+		add_filter( 'tiny_mce_before_init', array( $this, 'filter_tiny_mce_before_init' ) );
 	}
 
 	public function register_styles() {
@@ -56,11 +62,17 @@ class Prism {
 		if ( is_file( $cssfile_dir ) ) {
 
 			wp_register_style( 'prism', $cssfile_url, array(), filemtime( $cssfile_dir ) );
-		
+
 		} else {
-			
+
 			wp_register_style( 'prism', plugins_url( 'prism.css', __FILE__ ), array(), self::PRISM_VERSION );
 		}
+	}
+
+	public function plugin_editor_style( $mce_css ){
+
+			$mce_css .= ', ' . plugins_url( 'prism.css', __FILE__ );
+			return $mce_css;
 	}
 
 	public function register_scripts() {
@@ -73,9 +85,9 @@ class Prism {
 		if ( is_file( $jsfile_dir ) ) {
 
 			wp_register_script( 'prism', $jsfile_url, array(), filemtime( $jsfile_dir ), true );
-		
+
 		} else {
-			
+
 			wp_register_script( 'prism', plugins_url( 'prism.js', __FILE__ ), array(), self::PRISM_VERSION, true );
 		}
 	}
@@ -90,7 +102,7 @@ class Prism {
 
 			$post_contents = $post->post_content;
 
-		} elseif ( defined( 'PRISM_ARCHIVE_SCAN' ) && PRISM_ARCHIVE_SCAN ) {
+		} else {
 
 			$post_ids = wp_list_pluck( $wp_query->posts, 'ID' );
 
@@ -107,55 +119,60 @@ class Prism {
 		}
 	}
 
+	public function admin_load_prism() {
+
+		#wp_enqueue_style( 'prism' );
+		$this->register_scripts();
+		wp_enqueue_script( 'prism' );
+	}
+
 	public function shortcode( $atts, $content = null ) {
 
-		extract( shortcode_atts( 
-			array(
-				'field'            => false,
-				'url'              => false,
-				'post_id'          => false,
-				//* <code>
-				'language'         => 'none', 
-				//* <pre>
-				'id'               => false, 
-				'class'            => false,
-				'data_src'         => false, 
-				'data_start'       => false, 
-				'data_line'        => false, 
-				'data_line_offset' => false,
-				'data_manual'      => false,
-			),
-			$atts,
-			'prism'
-		) );
+		$pairs = array(
+			'field'            => false,
+			'url'              => false,
+			'post_id'          => false,
+			//* <code>
+			'language'         => 'none',
+			//* <pre>
+			'id'               => false,
+			'class'            => false,
+			'data_src'         => false,
+			'data_start'       => false,
+			'data_line'        => false,
+			'data_line_offset' => false,
+			'data_manual'      => false,
+		);
+
+		$atts = shortcode_atts( $pairs, $atts, 'prism' );
 
 		$pre_attr = array(
-			'id'               => ( $id ) ? $id : $field,
-			'class'            => $class,
-			'data-src'         => esc_url( $data_src ),
-			'data-start'       => $data_start,
-			'data-line'        => $data_line,
-			'data-line-offset' => $data_line_offset,
-			'data-manual'      => $data_manual,
+			'id'               => ( $atts['id'] ) ? $atts['id'] : $atts['field'],
+			'class'            => $atts['class'],
+			'data-src'         => esc_url( $atts['data_src'] ),
+			'data-start'       => $atts['data_start'],
+			'data-line'        => $atts['data_line'],
+			'data-line-offset' => $atts['data_line_offset'],
+			'data-manual'      => $atts['data_manual'],
 		);
 
 		$code_attr = array(
-			'class' => "language-{$language}",
+			'class' => 'language-' . $atts['language'],
 		);
 
-		if ( $url ) {
+		if ( $atts['url'] ) {
 
-			if ( false === filter_var( $url, FILTER_VALIDATE_URL ) ) {
+			if ( false === filter_var( $atts['url'], FILTER_VALIDATE_URL ) ) {
 
-				return sprintf( '<p><strong>Prism Shortcode Error:</strong> URL <code>%s</code> is invalid </p>', esc_html( $url ) );
+				return sprintf( '<p><strong>Prism Shortcode Error:</strong> URL <code>%s</code> is invalid </p>', esc_html( $atts['url'] ) );
 			}
 
-			$response = wp_remote_get( esc_url( $url ) );
+			$response = wp_remote_get( esc_url( $atts['url'] ) );
 
 			if ( is_wp_error( $response ) ) {
 
 				return sprintf( '<p><strong>Prism Shortcode Error:</strong> could not get remote content. WP_Error message:<br>%s</p>', esc_html( $response->get_error_message() ) );
-			
+
 			} elseif( 200 != $response['response']['code'] ) {
 
 				return sprintf( '<p><strong>Prism Shortcode Error:</strong> could not get remote content. HTTP response code %s</p>', esc_html( $response['response']['code'] ) );
@@ -164,7 +181,7 @@ class Prism {
 			wp_enqueue_style( 'prism' );
 			wp_enqueue_script( 'prism' );
 
-			return sprintf( 
+			return sprintf(
 				'<pre %s><code %s>%s</code></pre>',
 				$this->parse_attr( $pre_attr ),
 				$this->parse_attr( $code_attr ),
@@ -172,26 +189,26 @@ class Prism {
 			);
 		}
 
-		if ( $data_src ) {
+		if ( $atts['data_src'] ) {
 
 			wp_enqueue_style( 'prism' );
 			wp_enqueue_script( 'prism' );
 
-			$pre_attr['class'] .= " language-{$language}";
+			$pre_attr['class'] .= " language-{$atts['language']}";
 
 			return sprintf( '<pre %s></pre>', $this->parse_attr( $pre_attr ) );
 		}
 
-		if ( ! $field ) {
+		if ( ! $atts['field'] ) {
 
 			return '<p><strong>Prism Shortcode Error:</strong> field, url, data_src is missing</p>';
 		}
 
 		global $post;
 
-		$from_post = ( $post_id ) ? $post_id : $post->ID;
+		$from_post = ( $atts['post_id'] ) ? $atts['post_id'] : $post->ID;
 
-		$field_content = get_post_meta( $from_post, $field, true );
+		$field_content = get_post_meta( $from_post, $atts['field'], true );
 
 		if ( empty( $field_content ) ) {
 
@@ -201,14 +218,14 @@ class Prism {
 		wp_enqueue_style( 'prism' );
 		wp_enqueue_script( 'prism' );
 
-		return sprintf( 
+		return sprintf(
 			'<pre %s><code %s>%s</code></pre>',
 			$this->parse_attr( $pre_attr ),
 			$this->parse_attr( $code_attr ),
 			esc_html( $field_content )
 		);
 	}
-	
+
 	public function parse_attr( $attr = array() ) {
 
 		$out = '';
@@ -266,7 +283,7 @@ class Prism {
 
 		event.preventDefault();
 
-		send_to_editor( '[prism field= language=]' );
+		send_to_editor( '[prism field="" language=""]' );
 	} );
 
 }(jQuery));
@@ -283,5 +300,49 @@ class Prism {
 		}
 
 		return self::$instance;
+	}
+
+	function filter_tiny_mce_before_init( $settings ) {
+
+		$languages = array(
+			'Bash',
+			'CSS',
+			'JavaScript',
+			'Markup',
+			'PHP',
+			'SCSS',
+		);
+
+		$style_formats[] = array(
+			'title'    => "<code>",
+			'inline'   => 'code'
+		);
+
+		foreach ( $languages as $lang ) {
+
+			$lang_lowercase = strtolower( $lang );
+
+			$style_formats[] = array(
+				'title'    => "$lang <pre>",
+				'block'    => 'pre',
+				'classes'  => "language-$lang_lowercase",
+			);
+			$style_formats[] = array(
+				'title'    => "$lang <code>",
+				'inline'   => 'code',
+				'classes'  => "language-$lang_lowercase",
+			);
+		}
+
+	  $settings['style_formats'] = json_encode( $style_formats );
+		$settings['style_formats_merge'] = false;
+		#$settings['block_formats'] = 'Paragraph=p;Heading 3=h3;Heading 4=h4;CSS Code=pre';
+
+	  return $settings;
+	}
+
+	function mce_add_buttons( $buttons ) {
+    array_splice( $buttons, 1, 0, 'styleselect' );
+    return $buttons;
 	}
 }

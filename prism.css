@@ -1,4 +1,4 @@
-/* http://prismjs.com/download.html?themes=prism-okaidia&languages=markup+css+clike+javascript+bash+less+php&plugins=line-highlight+line-numbers+wpd+show-language */
+/* http://prismjs.com/download.html?themes=prism-okaidia&languages=markup+css+clike+javascript+bash+php+scss+yaml&plugins=line-highlight+line-numbers+wpd+file-highlight+show-language+keep-markup */
 /**
  * okaidia theme for JavaScript, CSS and HTML
  * Loosely based on Monokai textmate theme by http://www.monokai.nl/
@@ -8,13 +8,14 @@
 code[class*="language-"],
 pre[class*="language-"] {
 	color: #f8f8f2;
+	background: none;
 	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
-	font-family: Consolas, Monaco, 'Andale Mono', monospace;
-	direction: ltr;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 	text-align: left;
 	white-space: pre;
 	word-spacing: normal;
 	word-break: normal;
+	word-wrap: normal;
 	line-height: 1.5;
 
 	-moz-tab-size: 4;
@@ -44,6 +45,7 @@ pre[class*="language-"] {
 :not(pre) > code[class*="language-"] {
 	padding: .1em;
 	border-radius: .3em;
+	white-space: normal;
 }
 
 .token.comment,
@@ -132,13 +134,10 @@ pre[data-line] {
 	margin-top: 1em; /* Same as .prism’s padding-top */
 
 	background: hsla(24, 20%, 50%,.08);
-	background: -moz-linear-gradient(left, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
-	background: -webkit-linear-gradient(left, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
-	background: -o-linear-gradient(left, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
-	background: linear-gradient(left, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
-	
+	background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+
 	pointer-events: none;
-	
+
 	line-height: inherit;
 	white-space: pre;
 }
@@ -160,12 +159,13 @@ pre[data-line] {
 		text-shadow: none;
 		box-shadow: 0 1px white;
 	}
-	
+
 	.line-highlight[data-end]:after {
 		content: attr(data-end);
 		top: auto;
 		bottom: .4em;
 	}
+
 pre.line-numbers {
 	position: relative;
 	padding-left: 3.8em;
@@ -217,19 +217,31 @@ pre[class*="language-"] a[href]:hover {
 	cursor: help;
 	text-decoration: underline;
 }
-pre[class*='language-'] {
+div.prism-show-language {
 	position: relative;
 }
-pre[class*='language-'][data-language]::before {
-	content: attr(data-language);
+
+div.prism-show-language > div.prism-show-language-label {
 	color: black;
 	background-color: #CFCFCF;
 	display: inline-block;
 	position: absolute;
+	bottom: auto;
+	left: auto;
 	top: 0;
 	right: 0;
+	width: auto;
+	height: auto;
 	font-size: 0.9em;
 	border-radius: 0 0 0 5px;
 	padding: 0 0.5em;
 	text-shadow: none;
+	z-index: 1;
+	box-shadow: none;
+	-webkit-transform: none;
+	-moz-transform: none;
+	-ms-transform: none;
+	-o-transform: none;
+	transform: none;
 }
+
